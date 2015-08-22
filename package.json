@@ -1,0 +1,38 @@
+{
+  "name": "dependents-editor-backend",
+  "version": "1.0.0",
+  "description": "The brains behind Dependents editor plugins",
+  "main": "index.js",
+  "scripts": {
+    "test": "jscs -p google test index.js bin && jshint && mocha"
+  },
+  "bin": {
+    "dependents-backend": "bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mrjoelkemp/node-dependents-editor-backend.git"
+  },
+  "keywords": [
+    "Dependents",
+    "editor",
+    "plugin"
+  ],
+  "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrjoelkemp/node-dependents-editor-backend/issues"
+  },
+  "homepage": "https://github.com/mrjoelkemp/node-dependents-editor-backend#readme",
+  "devDependencies": {
+    "jscs": "~2.1.0",
+    "jshint": "~2.8.0",
+    "mocha": "~2.2.5"
+  },
+  "dependencies": {
+    "commander": "~2.8.1",
+    "debug": "~2.2.0",
+    "filing-cabinet": "~1.0.3",
+    "q": "~1.4.1"
+  }
+}
