@@ -4,7 +4,7 @@
   "description": "The brains behind Dependents editor plugins",
   "main": "index.js",
   "scripts": {
-    "test": "jscs -p google test index.js bin && jshint && mocha"
+    "test": "jscs test index.js bin && jshint && ./node_modules/.bin/mocha --compilers js:babel/register 'test/**/*.js'"
   },
   "bin": {
     "dependents-backend": "bin/cli.js"
@@ -25,14 +25,16 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-dependents-editor-backend#readme",
   "devDependencies": {
+    "babel": "~5.8.38",
     "jscs": "~2.1.0",
+    "jscs-preset-mrjoelkemp": "~1.0.0",
     "jshint": "~2.8.0",
     "mocha": "~2.2.5"
   },
   "dependencies": {
     "commander": "~2.8.1",
     "debug": "~2.2.0",
-    "filing-cabinet": "~1.0.3",
+    "filing-cabinet": "~1.2.1",
     "q": "~1.4.1"
   }
 }
