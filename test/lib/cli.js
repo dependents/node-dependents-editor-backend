@@ -1,6 +1,7 @@
 import assert from 'assert';
 import path from 'path';
 import cli from '../../lib/cli';
+import assign from 'object-assign';
 
 describe('lib/cli', function() {
   beforeEach(function() {
@@ -216,6 +217,80 @@ describe('lib/cli', function() {
             lookup: true
           }).then(result => {
             assert.equal(result, `${this._directory}/vendors/index.styl`);
+          });
+        });
+      });
+    });
+
+    describe('js', function() {
+      describe('amd', function() {
+        beforeEach(function() {
+          this._directory = `${this._fixturePath}/javascript/amd/js`;
+
+          this._run = (data = {}) => {
+            return cli(assign({
+              directory: this._directory,
+              config: `${this._fixturePath}/javascript/amd/config.js`,
+              lookup: true
+            }, data));
+          };
+        });
+
+        it('resolves aliased partials', function() {
+          return this._run({
+            filename: `${this._directory}/driver.js`,
+            args: ['foobar']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/b.js`);
+          });
+        });
+
+        it('resolves unaliased partials', function() {
+          return this._run({
+            filename: `${this._directory}/driver.js`,
+            args: ['./b']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/b.js`);
+          });
+        });
+
+        it.skip('resolves aliased partials to minified files', function() {
+          return this._run({
+            filename: `${this._directory}/driver.js`,
+            args: ['jquery']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/vendor/jquery.min.js`);
+          });
+        });
+      });
+
+      describe('es6', function() {
+        beforeEach(function() {
+          this._directory = `${this._fixturePath}/javascript/es6`;
+
+          this._run = (data = {}) => {
+            return cli(assign({
+              directory: this._directory,
+              lookup: true
+            }, data));
+          };
+        });
+
+        it('resolves relative partials', function() {
+          return this._run({
+            filename: `${this._directory}/index.js`,
+            args: ['./foo']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/foo.js`);
+          });
+        });
+
+        it('resolves subdirectory partials', function() {
+          return this._run({
+            filename: `${this._directory}/index.js`,
+            args: ['./lib/mylib']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/lib/mylib.js`);
           });
         });
       });
