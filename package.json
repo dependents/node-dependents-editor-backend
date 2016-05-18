@@ -4,7 +4,8 @@
   "description": "The brains behind Dependents editor plugins",
   "main": "lib/cli.js",
   "scripts": {
-    "test": "jscs lib test/test.js test/lib bin && jshint && ./node_modules/.bin/mocha --compilers js:babel/register test/test.js 'test/lib/**/*.js'"
+    "test": "jscs lib test/test.js test/lib test/features bin && jshint && ./node_modules/.bin/mocha --compilers js:babel/register test/test.js 'test/lib/**/*.js' 'test/features/**/*.js'",
+    "debug-test": "DEBUG=*,-mocha:*,-babel npm test"
   },
   "bin": {
     "dependents-backend": "bin/cli.js"
@@ -34,6 +35,7 @@
   "dependencies": {
     "commander": "~2.8.1",
     "debug": "~2.2.0",
+    "dependents": "~3.1.1",
     "file-exists": "~1.0.0",
     "filing-cabinet": "~1.2.1",
     "find": "~0.2.4",
