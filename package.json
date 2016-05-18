@@ -4,7 +4,7 @@
   "description": "The brains behind Dependents editor plugins",
   "main": "lib/cli.js",
   "scripts": {
-    "test": "jscs lib test bin && jshint && ./node_modules/.bin/mocha --compilers js:babel/register test/test.js 'test/lib/**/*.js'"
+    "test": "jscs lib test/test.js test/lib bin && jshint && ./node_modules/.bin/mocha --compilers js:babel/register test/test.js 'test/lib/**/*.js'"
   },
   "bin": {
     "dependents-backend": "bin/cli.js"

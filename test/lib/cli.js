@@ -330,6 +330,65 @@ describe('lib/cli', function() {
           });
         });
       });
+
+      describe('webpack', function() {
+        beforeEach(function() {
+          this._directory = `${this._fixturePath}/javascript/webpack`;
+
+          this._run = (data = {}) => {
+            return cli(assign({
+              directory: this._directory,
+              webpackConfig: `${this._fixturePath}/javascript/webpack/webpack.config.js`,
+              lookup: true
+            }, data));
+          };
+        });
+
+        it('resolves aliased partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['R']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/node_modules/is-relative-path/index.js`);
+          });
+        });
+
+        it('resolves unaliased partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['./someModule']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/someModule.js`);
+          });
+        });
+
+        it.skip('resolves template partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['hgn!templates/foo']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/templates/foo.mustache`);
+          });
+        });
+
+        it.skip('resolves text partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['text!templates/foo.mustache']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/templates/foo.mustache`);
+          });
+        });
+
+        it.skip('resolves style partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['css!styles/foo']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/styles/foo.css`);
+          });
+        });
+      });
     });
   });
 });
