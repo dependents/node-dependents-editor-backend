@@ -1,3 +1,4 @@
 {
-  "preset": "mrjoelkemp"
+  "preset": "mrjoelkemp",
+  "requireCamelCaseOrUpperCaseIdentifiers": null
 }

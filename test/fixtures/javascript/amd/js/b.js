@@ -1,6 +1,7 @@
 define([
   'hgn!templates/face',
-  'css!styles/styles'
+  'css!styles/styles',
+  '../config'
 ], function(templ) {
 
 });

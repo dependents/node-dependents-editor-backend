@@ -254,7 +254,34 @@ describe('lib/cli', function() {
           });
         });
 
-        it.skip('resolves aliased partials to minified files', function() {
+        it('resolves relative partials', function() {
+          return this._run({
+            filename: `${this._directory}/b.js`,
+            args: ['../config']
+          }).then(result => {
+            assert.equal(result, path.resolve(`${this._directory}`, '../') + '/config.js');
+          });
+        });
+
+        it('resolves template imports', function() {
+          return this._run({
+            filename: `${this._directory}/b.js`,
+            args: ['hgn!templates/face']
+          }).then(result => {
+            assert.equal(result, path.resolve(`${this._directory}`, '../templates') + '/face.mustache');
+          });
+        });
+
+        it('resolves css imports', function() {
+          return this._run({
+            filename: `${this._directory}/b.js`,
+            args: ['css!styles/styles']
+          }).then(result => {
+            assert.equal(result, path.resolve(`${this._directory}`, '../styles') + '/styles.css');
+          });
+        });
+
+        it('resolves aliased partials to minified files', function() {
           return this._run({
             filename: `${this._directory}/driver.js`,
             args: ['jquery']
@@ -285,12 +312,80 @@ describe('lib/cli', function() {
           });
         });
 
+        it('resolves relative partials within a subdirectory', function() {
+          return this._run({
+            filename: `${this._directory}/lib/mylib.js`,
+            args: ['../foo']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/foo.js`);
+          });
+        });
+
         it('resolves subdirectory partials', function() {
           return this._run({
             filename: `${this._directory}/index.js`,
             args: ['./lib/mylib']
           }).then(result => {
             assert.equal(result, `${this._directory}/lib/mylib.js`);
+          });
+        });
+      });
+
+      describe('webpack', function() {
+        beforeEach(function() {
+          this._directory = `${this._fixturePath}/javascript/webpack`;
+
+          this._run = (data = {}) => {
+            return cli(assign({
+              directory: this._directory,
+              webpackConfig: `${this._fixturePath}/javascript/webpack/webpack.config.js`,
+              lookup: true
+            }, data));
+          };
+        });
+
+        it('resolves aliased partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['R']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/node_modules/is-relative-path/index.js`);
+          });
+        });
+
+        it('resolves unaliased partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['./someModule']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/someModule.js`);
+          });
+        });
+
+        it.skip('resolves template partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['hgn!templates/foo']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/templates/foo.mustache`);
+          });
+        });
+
+        it.skip('resolves text partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['text!templates/foo.mustache']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/templates/foo.mustache`);
+          });
+        });
+
+        it.skip('resolves style partials', function() {
+          return this._run({
+            filename: `${this._directory}/webpack/index.js`,
+            args: ['css!styles/foo']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/styles/foo.css`);
           });
         });
       });
