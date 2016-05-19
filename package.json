@@ -5,7 +5,7 @@
   "main": "lib/cli.js",
   "scripts": {
     "test": "jscs lib test/test.js test/lib test/features bin && jshint && ./node_modules/.bin/mocha --compilers js:babel/register test/test.js 'test/lib/**/*.js' 'test/features/**/*.js'",
-    "debug-test": "DEBUG=*,-mocha:*,-babel npm test"
+    "debug-test": "DEBUG=*,-mocha:*,-babel,-parse npm test"
   },
   "bin": {
     "dependents-backend": "bin/cli.js"

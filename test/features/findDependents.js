@@ -165,5 +165,63 @@ describe('find dependents', function() {
         });
       });
     });
+
+    describe('amd', function() {
+      beforeEach(function() {
+        this._directory = `${this._fixturePath}/javascript/amd/js`;
+
+        this._run = (data = {}) => {
+          return cli(assign({
+            directory: this._directory,
+            config: path.resolve(this._directory, '../config.js'),
+            findDependents: true
+          }, data));
+        };
+      });
+
+      // See https://github.com/mrjoelkemp/node-module-lookup-amd/issues/8
+      it.skip('finds a minified dependent', function() {
+        return this._run({
+          filename: `${this._directory}/vendor/jquery.min.js`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/driver.js`, results);
+        });
+      });
+
+      // See https://github.com/mrjoelkemp/node-module-lookup-amd/issues/8
+      it.skip('finds the dependents of a template', function() {
+        return this._run({
+          filename: `${this._directory}/styles/styles.css`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/b.js`, results);
+        });
+      });
+
+      // See https://github.com/mrjoelkemp/node-module-lookup-amd/issues/8
+      it.skip('finds the dependents of an imported stylesheet', function() {
+        return this._run({
+          filename: `${this._directory}/templates/face.mustache`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/b.js`, results);
+        });
+      });
+
+      it('finds the dependents of a non-aliased module', function() {
+        return this._run({
+          filename: `${this._directory}/b.js`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/driver.js`, results);
+        });
+      });
+
+      it('finds the dependents of an aliased module', function() {
+        return this._run({
+          filename: `${this._directory}/b.js`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/usesBAlias.js`, results);
+          assert.ok(results.length > 1);
+        });
+      });
+    });
   });
 });
