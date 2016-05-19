@@ -7,6 +7,13 @@ import path from 'path';
 describe('partial lookup', function() {
   beforeEach(function() {
     this._fixturePath = path.resolve(__dirname, '../fixtures');
+
+    this._run = (data = {}) => {
+      return cli(assign({
+        directory: this._directory,
+        lookup: true
+      }, data));
+    };
   });
 
   describe('sass', function() {
@@ -15,77 +22,63 @@ describe('partial lookup', function() {
     });
 
     it('resolves non-underscored partials that have underscored file names', function() {
-      return cli({
+      return this._run({
         filename: `${this._directory}/styles.sass`,
-        directory: this._directory,
-        args: ['styles3.sass'],
-        lookup: true
+        args: ['styles3.sass']
       }).then(result => {
         assert.equal(result, `${this._directory}/_styles3.sass`);
       });
     });
 
     it('resolves underscored partials that have underscored filenames', function() {
-      return cli({
+      return this._run({
         filename: `${this._directory}/styles.sass`,
-        directory: this._directory,
-        args: ['_styles3.sass'],
-        lookup: true
+        args: ['_styles3.sass']
       }).then(result => {
         assert.equal(result, `${this._directory}/_styles3.sass`);
       });
     });
 
     it('resolves partials without an explicit extension', function() {
-      return cli({
+      return this._run({
         filename: `${this._directory}/styles.sass`,
-        directory: this._directory,
-        args: ['styles3'],
-        lookup: true
+        args: ['styles3']
       }).then(result => {
         assert.equal(result, `${this._directory}/_styles3.sass`);
       });
     });
 
     it('resolves partials in subdirectories', function() {
-      return cli({
+      return this._run({
         filename: `${this._directory}/styles.sass`,
-        directory: this._directory,
-        args: ['themes/dark'],
-        lookup: true
+        args: ['themes/dark']
       }).then(result => {
         assert.equal(result, `${this._directory}/themes/dark.sass`);
       });
     });
 
     it('resolves doubly-quoted partials', function() {
-      return cli({
+      return this._run({
         filename: `${this._directory}/styles.sass`,
-        directory: this._directory,
-        args: ['"themes/dark"'],
-        lookup: true
+        args: ['"themes/dark"']
       }).then(result => {
         assert.equal(result, `${this._directory}/themes/dark.sass`);
       });
     });
 
     it('resolves singly-quoted partials', function() {
-      return cli({
+      return this._run({
         filename: `${this._directory}/styles.sass`,
-        directory: this._directory,
-        args: ['\'themes/dark\''],
-        lookup: true
+        args: ['\'themes/dark\'']
       }).then(result => {
         assert.equal(result, `${this._directory}/themes/dark.sass`);
       });
     });
 
     it('resolves partials with a trailing semicolon', function() {
-      return cli({
+      return this._run({
         filename: `${this._directory}/styles.sass`,
-        directory: this._directory,
-        args: ['styles3;'],
-        lookup: true
+        args: ['styles3;']
       }).then(result => {
         assert.equal(result, `${this._directory}/_styles3.sass`);
       });
@@ -327,6 +320,39 @@ describe('partial lookup', function() {
           args: ['./lib/mylib']
         }).then(result => {
           assert.equal(result, `${this._directory}/lib/mylib.js`);
+        });
+      });
+    });
+
+    describe('commonjs', function() {
+      beforeEach(function() {
+        this._directory = `${this._fixturePath}/javascript/commonjs`;
+      });
+
+      it('resolves same directory partials', function() {
+        return this._run({
+          filename: `${this._directory}/index.js`,
+          args: ['./foo']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/foo.js`);
+        });
+      });
+
+      it('resolves sub-directory partials', function() {
+        return this._run({
+          filename: `${this._directory}/index.js`,
+          args: ['./dir/subdir/baz']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/dir/subdir/baz.js`);
+        });
+      });
+
+      it('resolves npm package partials', function() {
+        return this._run({
+          filename: `${this._directory}/index.js`,
+          args: ['is-relative-path']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/node_modules/is-relative-path/index.js`);
         });
       });
     });
