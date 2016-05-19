@@ -1,0 +1,3 @@
+define([
+  'foobar'
+], function(b) {});

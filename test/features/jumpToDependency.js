@@ -282,6 +282,15 @@ describe('partial lookup', function() {
           assert.equal(result, `${this._directory}/vendor/jquery.min.js`);
         });
       });
+
+      it('resolves a partial from an outside test directory', function() {
+        return this._run({
+          filename: `${this._directory}/test/someFile.js`,
+          args: ['b']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/b.js`);
+        });
+      });
     });
 
     describe('es6', function() {
