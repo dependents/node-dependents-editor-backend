@@ -108,9 +108,62 @@ describe('find dependents', function() {
         assert.equal(results.length, 0);
       });
     });
+
+    // See https://github.com/mrjoelkemp/node-dependents-editor-backend/issues/7
+    it.skip('finds dependents of a star partial', function() {
+      return this._run({
+        filename: `${this._directory}/utils/_extraUnusedForStar.styl`
+      }).then(results => {
+        this._assertSomeDependent(`${this._directory}/site.styl`, results);
+      });
+    });
   });
 
   describe('javascript', function() {
+    describe('es6', function() {
+      beforeEach(function() {
+        this._directory = `${this._fixturePath}/javascript/es6`;
+      });
 
+      it('finds the dependents of a module', function() {
+        return this._run({
+          filename: `${this._directory}/lib/mylib.js`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/foo.js`, results);
+          this._assertSomeDependent(`${this._directory}/bar.js`, results);
+        });
+      });
+
+      it('returns an empty list when there are no dependents', function() {
+        return this._run({
+          filename: `${this._directory}/index.js`
+        }).then(results => {
+          assert.equal(results.length, 0);
+        });
+      });
+    });
+
+    describe('commonjs', function() {
+      beforeEach(function() {
+        this._directory = `${this._fixturePath}/javascript/commonjs`;
+      });
+
+      it('finds the dependents of a module', function() {
+        return this._run({
+          filename: `${this._directory}/dir/subdir/baz.js`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/foo.js`, results);
+          this._assertSomeDependent(`${this._directory}/bar.js`, results);
+        });
+      });
+
+      it('returns an empty list when there are no dependents', function() {
+        return this._run({
+          filename: `${this._directory}/index.js`
+        }).then(results => {
+          assert.equal(results.length, 0);
+        });
+      });
+    });
   });
 });
