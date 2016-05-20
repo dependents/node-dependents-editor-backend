@@ -20,7 +20,6 @@ describe('find dependents', function() {
 
     this._run = (data = {}) => {
       return cli(assign({
-        directory: this._directory,
         findDependents: true
       }, data));
     };
@@ -34,6 +33,15 @@ describe('find dependents', function() {
     it('finds all of the dependents of a module', function() {
       return this._run({
         filename: `${this._directory}/themes/dark.sass`
+      }).then(results => {
+        this._assertSomeDependent(`${this._directory}/styles.sass`, results);
+      });
+    });
+
+    // See https://github.com/mrjoelkemp/node-dependents-editor-backend/issues/11
+    it.skip('finds dependents within the same directory', function() {
+      return this._run({
+        filename: `${this._directory}/styles2.sass`
       }).then(results => {
         this._assertSomeDependent(`${this._directory}/styles.sass`, results);
       });

@@ -10,7 +10,6 @@ describe('partial lookup', function() {
 
     this._run = (data = {}) => {
       return cli(assign({
-        directory: this._directory,
         lookup: true
       }, data));
     };
