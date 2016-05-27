@@ -16,6 +16,12 @@ describe('lib/Config', function() {
       this._config.load(`${this._directory}/noJSRoot.js`);
       assert.equal(this._config.directory, `${this._directory}/styles`);
     });
+
+    describe('and the styles root is missing', function() {
+      it('throws an error', function() {
+        assert.throws(() => this._config.load(`${this._directory}/noRootsAtAll.js`));
+      });
+    });
   });
 
   describe('exclude', function() {
