@@ -94,31 +94,25 @@ describe('get dependency tree', function() {
       });
     });
 
-    // See https://github.com/mrjoelkemp/node-module-lookup-amd/issues/8
-    it.skip('includes templates in the tree', function() {
+    it('includes templates in the tree', function() {
       const filename = `${this._directory}/b.js`;
 
       return this._run({
         filename
       })
       .then(({[filename]: tree}) => {
-        const bTree = tree[`${this._directory}/b.js`];
-
-        this._assertSomeDependency(path.resolve(this._directory, '../templates/face.mustache'), bTree);
+        this._assertSomeDependency(path.resolve(this._directory, '../templates/face.mustache'), tree);
       });
     });
 
-    // See https://github.com/mrjoelkemp/node-module-lookup-amd/issues/8
-    it.skip('includes styles in the tree', function() {
+    it('includes styles in the tree', function() {
       const filename = `${this._directory}/b.js`;
 
       return this._run({
         filename
       })
       .then(({[filename]: tree}) => {
-        const bTree = tree[`${this._directory}/b.js`];
-
-        this._assertSomeDependency(path.resolve(this._directory, '../styles/styles.css'), bTree);
+        this._assertSomeDependency(path.resolve(this._directory, '../styles/styles.css'), tree);
       });
     });
 
@@ -166,6 +160,68 @@ describe('get dependency tree', function() {
       })
       .then(tree => {
         assert.deepEqual(tree[filename], {});
+      });
+    });
+  });
+
+  describe('sass', function() {
+    beforeEach(function() {
+      this._directory = `${this._fixturePath}/sass`;
+    });
+
+    // See https://github.com/mrjoelkemp/node-dependents-editor-backend/issues/31
+    it.skip('returns the tree of the given file', function() {
+      const filename = `${this._directory}/styles.sass`;
+
+      return this._run({
+        filename
+      })
+      .then(({[filename]: tree}) => {
+        this._assertSomeDependency(`${this._directory}/themes/dark.sass`, tree);
+        this._assertSomeDependency(`${this._directory}/styles2.sass`, tree);
+        this._assertSomeDependency(`${this._directory}/_styles3.sass`, tree);
+      });
+    });
+
+    it('returns an empty object if a module has no dependencies', function() {
+      const filename = `${this._directory}/styles2.sass`;
+
+      return this._run({
+        filename
+      })
+      .then(({[filename]: tree}) => {
+        assert.deepEqual(tree, {});
+      });
+    });
+  });
+
+  describe('scss', function() {
+    beforeEach(function() {
+      this._directory = `${this._fixturePath}/scss`;
+    });
+
+    it('returns the tree of the given file', function() {
+      const filename = `${this._directory}/site.scss`;
+
+      return this._run({
+        filename
+      })
+      .then(({[filename]: tree}) => {
+        this._assertSomeDependency(`${this._directory}/vendors/_packages.scss`, tree);
+        this._assertSomeDependency(`${this._directory}/utils/_debug.scss`, tree);
+        this._assertSomeDependency(`${this._directory}/utils/_mixins.scss`, tree);
+        this._assertSomeDependency(`${this._directory}/_mixins.scss`, tree);
+      });
+    });
+
+    it('returns an empty object if a module has no dependencies', function() {
+      const filename = `${this._directory}/_mixins.scss`;
+
+      return this._run({
+        filename
+      })
+      .then(({[filename]: tree}) => {
+        assert.deepEqual(tree, {});
       });
     });
   });

@@ -1,0 +1,11 @@
+{
+  "baseUrl": "js/",
+  "modules": [
+    {
+      "name": "driver"
+    },
+    {
+      "name": "usesBAlias"
+    }
+  ]
+}

@@ -187,8 +187,7 @@ describe('find dependents', function() {
         };
       });
 
-      // See https://github.com/mrjoelkemp/node-module-lookup-amd/issues/8
-      it.skip('finds a minified dependent', function() {
+      it('finds a minified dependent', function() {
         return this._run({
           filename: `${this._directory}/vendor/jquery.min.js`
         }).then(results => {
@@ -196,19 +195,17 @@ describe('find dependents', function() {
         });
       });
 
-      // See https://github.com/mrjoelkemp/node-module-lookup-amd/issues/8
-      it.skip('finds the dependents of a template', function() {
+      it('finds the dependents of an imported stylesheet', function() {
         return this._run({
-          filename: `${this._directory}/styles/styles.css`
+          filename: path.join(this._directory, '../styles/styles.css')
         }).then(results => {
           this._assertSomeDependent(`${this._directory}/b.js`, results);
         });
       });
 
-      // See https://github.com/mrjoelkemp/node-module-lookup-amd/issues/8
-      it.skip('finds the dependents of an imported stylesheet', function() {
+      it('finds the dependents of a template', function() {
         return this._run({
-          filename: `${this._directory}/templates/face.mustache`
+          filename: path.join(this._directory, '../templates/face.mustache')
         }).then(results => {
           this._assertSomeDependent(`${this._directory}/b.js`, results);
         });
