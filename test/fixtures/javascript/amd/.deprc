@@ -1,5 +1,6 @@
 {
   "root": "js",
   "sass_root": "styles",
-  "config": "config.js"
+  "config": "config.js",
+  "build_config": "build.json"
 }

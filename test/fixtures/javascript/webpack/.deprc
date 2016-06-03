@@ -1,4 +1,4 @@
 {
-  "webpack_config": "webpack.config.js",
-  "root": "./"
+  "root": "./",
+  "webpack_config": "webpack.config.js"
 }
