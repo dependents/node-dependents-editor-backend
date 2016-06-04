@@ -43,14 +43,16 @@ describe('lib/Config', function() {
 
   describe('#toJSON', function() {
     it('returns the parsed config in JSON format', function() {
+      this._config.load(this._deprc);
       const json = this._config.toJSON();
 
-      assert.equal(json.directory, this._config.directory);
-      assert.equal(json.stylesRoot, this._config.stylesRoot);
-      assert.equal(json.buildConfig, this._config.buildConfig);
-      assert.equal(json.requireConfig, this._config.requireConfig);
-      assert.equal(json.webpackConfig, this._config.webpackConfig);
-      assert.equal(json.exclude, this._config.exclude);
+      assert.equal(json.nodePath,  ':/usr/local/bin');
+      assert.equal(json.directory, `${this._directory}`);
+      assert.equal(json.stylesRoot, `${this._directory}`);
+      assert.equal(json.buildConfig, `${this._directory}/build.json`);
+      assert.equal(json.requireConfig, `${this._directory}/config.js`);
+      assert.equal(json.webpackConfig, `${this._directory}/webpack.config.js`);
+      assert.deepEqual(json.exclude, ['bin']);
     });
   });
 });

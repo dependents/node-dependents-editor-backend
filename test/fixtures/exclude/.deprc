@@ -6,5 +6,6 @@
   "webpack_config": "./webpack.config.js",
   "exclude": [
     "bin"
-  ]
+  ],
+  "node_path": ":/usr/local/bin"
 }
