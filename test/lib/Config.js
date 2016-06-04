@@ -40,4 +40,17 @@ describe('lib/Config', function() {
       assert.equal(this._config.exclude[0], 'bin');
     });
   });
+
+  describe('#toJSON', function() {
+    it('returns the parsed config in JSON format', function() {
+      const json = this._config.toJSON();
+
+      assert.equal(json.directory, this._config.directory);
+      assert.equal(json.stylesRoot, this._config.stylesRoot);
+      assert.equal(json.buildConfig, this._config.buildConfig);
+      assert.equal(json.requireConfig, this._config.requireConfig);
+      assert.equal(json.webpackConfig, this._config.webpackConfig);
+      assert.equal(json.exclude, this._config.exclude);
+    });
+  });
 });
