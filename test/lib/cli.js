@@ -15,4 +15,13 @@ describe('lib/cli', function() {
       done();
     });
   });
+
+  it('rejects if no supported command was supplied', function(done) {
+    cli({
+      filename: `${this._fixturePath}/javascript/es6/index.js`
+    }).catch(message => {
+      assert.equal(message, 'No valid command given');
+      done();
+    });
+  });
 });
