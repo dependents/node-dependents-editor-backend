@@ -25,7 +25,7 @@ describe('get config', function() {
       assert.equal(config.webpackConfig, '');
       assert.equal(config.requireConfig, `${this._directory}/config.js`);
       assert.equal(config.buildConfig, `${this._directory}/build.json`);
-      assert.deepEqual(config.exclude, []);
+      assert.deepEqual(config.exclude, ['node_modules']);
     });
   });
 });

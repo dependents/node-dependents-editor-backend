@@ -1,4 +1,7 @@
 {
   "root": "./",
-  "webpack_config": "webpack.config.js"
+  "webpack_config": "webpack.config.js",
+  "exclude": [
+    "bower_components"
+  ]
 }

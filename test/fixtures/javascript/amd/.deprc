@@ -2,5 +2,6 @@
   "root": "js",
   "sass_root": "styles",
   "config": "config.js",
-  "build_config": "build.json"
+  "build_config": "build.json",
+  "exclude": ["node_modules"]
 }
