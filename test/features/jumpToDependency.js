@@ -15,6 +15,36 @@ describe('partial lookup', function() {
     };
   });
 
+  describe('positional lookup', function() {
+    describe('when given a line of text and a clicked position within that text', function() {
+      it('finds and resolves the relevant import', function() {
+        const directory = `${this._fixturePath}/javascript/es6`;
+
+        return this._run({
+          lookupPosition: 18,
+          filename: `${directory}/index.js`,
+          args: ['import bar from \'./bar\';']
+        }).then(result => {
+          assert.equal(result, `${directory}/bar.js`);
+        });
+      });
+    });
+
+    describe('when given a line of padded text and a clicked position within that text', function() {
+      it('finds and resolves the relevant import', function() {
+        const directory = `${this._fixturePath}/javascript/es6`;
+
+        return this._run({
+          lookupPosition: 23,
+          filename: `${directory}/index.js`,
+          args: ['      import bar from \'./bar\';']
+        }).then(result => {
+          assert.equal(result, `${directory}/bar.js`);
+        });
+      });
+    });
+  });
+
   describe('sass', function() {
     beforeEach(function() {
       this._directory = `${this._fixturePath}/sass`;
