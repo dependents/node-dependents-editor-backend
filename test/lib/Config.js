@@ -11,15 +11,25 @@ describe('lib/Config', function() {
     this._deprc = `${this._directory}/.deprc`;
   });
 
+  describe('when a setting contains an invalid value', function() {
+    it('throws an error', function() {
+      const expectedError = new RegExp(`No such file or directory: ${this._directory}/stylish`);
+      assert.throws(() => {
+        this._config.load(`${this._directory}/invalidPaths.js`);
+      }, expectedError);
+    });
+  });
+
   describe('when the js root is missing', function() {
     it('should default the main directory to the styles root', function() {
       this._config.load(`${this._directory}/noJSRoot.js`);
-      assert.equal(this._config.directory, `${this._directory}/styles`);
+      assert.equal(this._config.directory, `${this._directory}`);
     });
 
     describe('and the styles root is missing', function() {
       it('throws an error', function() {
-        assert.throws(() => this._config.load(`${this._directory}/noRootsAtAll.js`));
+        const expectedError = /Either a root or styles_root must be defined in your \.deprc file/;
+        assert.throws(() => this._config.load(`${this._directory}/noRootsAtAll.js`), expectedError);
       });
     });
   });

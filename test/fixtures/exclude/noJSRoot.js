@@ -1,3 +1,3 @@
 {
-  "styles_root": "./styles"
+  "styles_root": "./"
 }
