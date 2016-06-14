@@ -186,7 +186,6 @@ describe('partial lookup', function() {
     it('resolves .css partials', function() {
       return cli({
         filename: `${this._directory}/vendors/index.styl`,
-        directory: this._directory,
         args: ['foo.css'],
         lookup: true
       }).then(result => {
@@ -194,14 +193,19 @@ describe('partial lookup', function() {
       });
     });
 
-    it.skip('resolves partials in the same directory', function() {
-
+    it('resolves partials in the same directory', function() {
+      return cli({
+        filename: `${this._directory}/site.styl`,
+        args: ['secondary'],
+        lookup: true
+      }).then(result => {
+        assert.equal(result, `${this._directory}/secondary.styl`);
+      });
     });
 
     it('resolves partials in subdirectories', function() {
       return cli({
         filename: `${this._directory}/site.styl`,
-        directory: this._directory,
         args: ['vendors/foo.css'],
         lookup: true
       }).then(result => {
@@ -212,7 +216,6 @@ describe('partial lookup', function() {
     it('resolves extensionless partials', function() {
       return cli({
         filename: `${this._directory}/site.styl`,
-        directory: this._directory,
         args: ['utils/_functions'],
         lookup: true
       }).then(result => {
@@ -223,7 +226,6 @@ describe('partial lookup', function() {
     it('resolves partials with extensions', function() {
       return cli({
         filename: `${this._directory}/site.styl`,
-        directory: this._directory,
         args: ['utils/_functions.styl'],
         lookup: true
       }).then(result => {
@@ -235,7 +237,6 @@ describe('partial lookup', function() {
       it('resolves to the index.styl file of a directory', function() {
         return cli({
           filename: `${this._directory}/site.styl`,
-          directory: this._directory,
           args: ['vendors'],
           lookup: true
         }).then(result => {
