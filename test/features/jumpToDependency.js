@@ -1,4 +1,5 @@
 import cli from '../../lib/cli';
+import Config from '../../lib/Config';
 
 import assign from 'object-assign';
 import assert from 'assert';
@@ -193,7 +194,7 @@ describe('partial lookup', function() {
       });
     });
 
-    it('resolves partials in the same directory', function() {
+    it.skip('resolves partials in the same directory', function() {
 
     });
 
@@ -252,7 +253,6 @@ describe('partial lookup', function() {
         this._run = (data = {}) => {
           return cli(assign({
             directory: this._directory,
-            config: `${this._fixturePath}/javascript/amd/config.js`,
             lookup: true
           }, data));
         };
@@ -318,6 +318,24 @@ describe('partial lookup', function() {
           args: ['b']
         }).then(result => {
           assert.equal(result, `${this._directory}/b.js`);
+        });
+      });
+
+      describe('when given a baseUrl with a leading slash', function() {
+        beforeEach(function() {
+          this._deprc = new Config();
+          this._deprc.load(`${this._fixturePath}/javascript/amd/.deprc`);
+          this._deprc.requireConfig = `${this._directory}/innerConfig.json`;
+        });
+
+        it('still resolves the partial', function() {
+          return this._run({
+            filename: `${this._directory}/driver.js`,
+            deprc: this._deprc,
+            args: ['b']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/b.js`);
+          });
         });
       });
     });
