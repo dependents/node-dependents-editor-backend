@@ -1,4 +1,5 @@
 import cli from '../../lib/cli';
+import Config from '../../lib/Config';
 
 import assign from 'object-assign';
 import assert from 'assert';
@@ -149,6 +150,22 @@ describe('find dependents', function() {
           assert.equal(results.length, 0);
         });
       });
+
+      it('still works for files that have jsx', function() {
+        return this._run({
+          filename: `${this._fixturePath}/javascript/jsx/index.js`
+        }).then(results => {
+          assert.equal(results.length, 0);
+        });
+      });
+
+      it('does not throw on files that have async functions', function() {
+        return this._run({
+          filename: `${this._fixturePath}/javascript/es7/index.js`
+        }).then(results => {
+          assert.equal(results.length, 0);
+        });
+      });
     });
 
     describe('commonjs', function() {
@@ -225,6 +242,24 @@ describe('find dependents', function() {
         }).then(results => {
           this._assertSomeDependent(`${this._directory}/usesBAlias.js`, results);
           assert.ok(results.length > 1);
+        });
+      });
+
+      describe('when given a config with a baseUrl with a leading slash', function() {
+        beforeEach(function() {
+          this._directory = `${this._fixturePath}/javascript/amd`;
+          this._deprc = new Config();
+          this._deprc.load(`${this._directory}/.deprc`);
+          this._deprc.requireConfig = `${this._directory}/configWithLeadingSlash.js`;
+        });
+
+        it('still finds the dependents', function() {
+          return this._run({
+            filename: `${this._directory}/js/vendor/jquery.min.js`,
+            deprc: this._deprc
+          }).then(results => {
+            this._assertSomeDependent(`${this._directory}/js/driver.js`, results);
+          });
         });
       });
     });
