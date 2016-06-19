@@ -1,2 +1,2 @@
-var path = require('path');
-var templ = <jsx />;
+import a from './a';
+export default <jsx />;

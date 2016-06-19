@@ -379,6 +379,26 @@ describe('partial lookup', function() {
           assert.equal(result, `${this._directory}/lib/mylib.js`);
         });
       });
+
+      it('resolves files that contain es7', function() {
+        this._directory = `${this._fixturePath}/javascript/es7`;
+        return this._run({
+          filename: `${this._directory}/index.js`,
+          args: ['./a']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/a.js`);
+        });
+      });
+
+      it('resolves files that contain jsx', function() {
+        this._directory = `${this._fixturePath}/javascript/jsx`;
+        return this._run({
+          filename: `${this._directory}/index.js`,
+          args: ['./a']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/a.js`);
+        });
+      });
     });
 
     describe('commonjs', function() {
