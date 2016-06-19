@@ -399,6 +399,15 @@ describe('partial lookup', function() {
           assert.equal(result, `${this._directory}/a.js`);
         });
       });
+
+      it('handles es6 transpiled to cjs imports', function() {
+        return this._run({
+          filename: `${this._directory}/index.js`,
+          args: ['is-relative-path']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/node_modules/is-relative-path/index.js`);
+        });
+      });
     });
 
     describe('commonjs', function() {
