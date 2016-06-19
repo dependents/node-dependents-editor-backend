@@ -36,7 +36,7 @@
     "callers": "~1.0.3",
     "commander": "~2.8.1",
     "debug": "~2.2.0",
-    "dependency-tree": "~5.2.0",
+    "dependency-tree": "~5.3.0",
     "dependents": "~3.1.6",
     "filing-cabinet": "~1.2.6",
     "is-plain-object": "~2.0.1",
