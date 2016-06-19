@@ -39,8 +39,7 @@ describe('find dependents', function() {
       });
     });
 
-    // See https://github.com/mrjoelkemp/node-dependents-editor-backend/issues/11
-    it.skip('finds dependents within the same directory', function() {
+    it('finds dependents within the same directory', function() {
       return this._run({
         filename: `${this._directory}/styles2.sass`
       }).then(results => {

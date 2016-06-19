@@ -105,8 +105,7 @@ describe('find drivers', function() {
     });
   });
 
-  // See https://github.com/mrjoelkemp/node-dependents-editor-backend/issues/31
-  describe.skip('sass', function() {
+  describe('sass', function() {
     beforeEach(function() {
       this._directory = `${this._fixturePath}/sass`;
     });
