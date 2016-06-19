@@ -54,6 +54,30 @@ describe('get dependency tree', function() {
         assert.deepEqual(tree[filename], {});
       });
     });
+
+    it('returns the tree of files with jsx', function() {
+      this._directory = `${this._fixturePath}/javascript/jsx`;
+      const filename = `${this._directory}/index.js`;
+
+      return this._run({
+        filename
+      })
+      .then(({[filename]: tree}) => {
+        assert.ok(tree[`${this._directory}/a.js`]);
+      });
+    });
+
+    it('returns the tree of files with es7', function() {
+      this._directory = `${this._fixturePath}/javascript/es7`;
+      const filename = `${this._directory}/index.js`;
+
+      return this._run({
+        filename
+      })
+      .then(({[filename]: tree}) => {
+        assert.ok(tree[`${this._directory}/a.js`]);
+      });
+    });
   });
 
   describe('amd', function() {
