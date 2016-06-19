@@ -193,8 +193,7 @@ describe('get dependency tree', function() {
       this._directory = `${this._fixturePath}/sass`;
     });
 
-    // See https://github.com/mrjoelkemp/node-dependents-editor-backend/issues/31
-    it.skip('returns the tree of the given file', function() {
+    it('returns the tree of the given file', function() {
       const filename = `${this._directory}/styles.sass`;
 
       return this._run({
