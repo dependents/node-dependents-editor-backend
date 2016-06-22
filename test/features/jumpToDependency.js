@@ -441,6 +441,15 @@ describe('partial lookup', function() {
           assert.equal(result, `${this._directory}/node_modules/is-relative-path/index.js`);
         });
       });
+
+      it('resolves a directory to its index.js file', function() {
+        return this._run({
+          filename: `${this._directory}/index.js`,
+          args: ['dir']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/dir/index.js`);
+        });
+      });
     });
 
     describe('webpack', function() {
