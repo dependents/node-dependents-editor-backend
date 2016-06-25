@@ -165,6 +165,14 @@ describe('find dependents', function() {
           assert.equal(results.length, 0);
         });
       });
+
+      it('includes files that use the export ... from pattern', function() {
+        return this._run({
+          filename: `${this._directory}/baz.js`
+        }).then(results => {
+          assert.equal(results[0], `${this._directory}/exportsFrom.js`);
+        });
+      });
     });
 
     describe('commonjs', function() {
