@@ -27,10 +27,13 @@
   "homepage": "https://github.com/mrjoelkemp/node-dependents-editor-backend#readme",
   "devDependencies": {
     "babel": "~5.8.38",
+    "file-exists": "~1.0.0",
     "jscs": "~2.1.0",
     "jscs-preset-mrjoelkemp": "~1.0.0",
     "jshint": "~2.8.0",
-    "mocha": "~2.2.5"
+    "mocha": "~2.2.5",
+    "os-tmpdir": "~1.0.1",
+    "rewire": "~2.5.1"
   },
   "dependencies": {
     "callers": "~1.0.3",
@@ -43,6 +46,7 @@
     "mixpanel": "~0.4.0",
     "object-assign": "~4.1.0",
     "q": "~1.4.1",
-    "taxicab": "~2.2.0"
+    "taxicab": "~2.2.0",
+    "tree-pic": "~1.0.0"
   }
 }
