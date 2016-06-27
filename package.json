@@ -1,6 +1,6 @@
 {
   "name": "dependents-editor-backend",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "description": "The brains behind Dependents editor plugins",
   "main": "lib/cli.js",
   "scripts": {
