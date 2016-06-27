@@ -483,30 +483,57 @@ describe('partial lookup', function() {
         });
       });
 
-      it.skip('resolves template partials', function() {
+      it('resolves template partials', function() {
         return this._run({
           filename: `${this._directory}/webpack/index.js`,
-          args: ['hgn!templates/foo']
+          args: ['hgn!./templates/foo.mustache']
         }).then(result => {
           assert.equal(result, `${this._directory}/templates/foo.mustache`);
         });
       });
 
-      it.skip('resolves text partials', function() {
+      it('resolves template partials without the loader prefix', function() {
         return this._run({
           filename: `${this._directory}/webpack/index.js`,
-          args: ['text!templates/foo.mustache']
+          args: ['./templates/foo.mustache']
         }).then(result => {
           assert.equal(result, `${this._directory}/templates/foo.mustache`);
         });
       });
 
-      it.skip('resolves style partials', function() {
+      it('resolves text partials', function() {
         return this._run({
           filename: `${this._directory}/webpack/index.js`,
-          args: ['css!styles/foo']
+          args: ['text!./templates/foo.mustache']
         }).then(result => {
-          assert.equal(result, `${this._directory}/styles/foo.css`);
+          assert.equal(result, `${this._directory}/templates/foo.mustache`);
+        });
+      });
+
+      it('resolves text partials without the loader prefix', function() {
+        return this._run({
+          filename: `${this._directory}/webpack/index.js`,
+          args: ['./templates/foo.mustache']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/templates/foo.mustache`);
+        });
+      });
+
+      it('resolves style partials', function() {
+        return this._run({
+          filename: `${this._directory}/webpack/index.js`,
+          args: ['css!./styles/styles.css']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/styles/styles.css`);
+        });
+      });
+
+      it('resolves style partials without the loader prefix', function() {
+        return this._run({
+          filename: `${this._directory}/webpack/index.js`,
+          args: ['./styles/styles.css']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/styles/styles.css`);
         });
       });
     });
