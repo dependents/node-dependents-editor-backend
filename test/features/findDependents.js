@@ -270,5 +270,56 @@ describe('find dependents', function() {
         });
       });
     });
+
+    describe('webpack', function() {
+      beforeEach(function() {
+        this._directory = `${this._fixturePath}/javascript/webpack`;
+      });
+
+      it('finds the dependents of a module', function() {
+        return this._run({
+          filename: `${this._directory}/someModule.js`
+        }).then(results => {
+          assert.equal(results.length, 2);
+          this._assertSomeDependent(`${this._directory}/anotherDependent.js`, results);
+          this._assertSomeDependent(`${this._directory}/index.js`, results);
+        });
+      });
+
+      it('returns an empty list when there are no dependents', function() {
+        return this._run({
+          filename: `${this._directory}/index.js`
+        }).then(results => {
+          assert.equal(results.length, 0);
+        });
+      });
+
+      it('finds the dependents of an imported stylesheet', function() {
+        return this._run({
+          filename: `${this._directory}/styles/styles.css`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/someModule.js`, results);
+        });
+      });
+
+      it('finds the dependents of an imported template', function() {
+        return this._run({
+          filename: `${this._directory}/templates/foo.mustache`
+        }).then(results => {
+          this._assertSomeDependent(`${this._directory}/someModule.js`, results);
+        });
+      });
+
+      describe('when the partial has a loader reference', function() {
+        it('still registers the dependent', function() {
+          return this._run({
+            filename: `${this._directory}/templates/foo.mustache`
+          }).then(results => {
+            this._assertSomeDependent(`${this._directory}/someModule.js`, results);
+            this._assertSomeDependent(`${this._directory}/anotherDependent.js`, results);
+          });
+        });
+      });
+    });
   });
 });
