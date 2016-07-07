@@ -409,6 +409,15 @@ describe('partial lookup', function() {
         });
       });
 
+      it('resolves for a top level config partial', function() {
+        return this._run({
+          filename: `${this._directory}/components/common/index.js`,
+          args: ['config']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/config.js`);
+        });
+      });
+
       describe('when a partial implicitly references the index.js file of a subdir', function() {
         it('still resolves the partial', function() {
           return this._run({
