@@ -408,6 +408,17 @@ describe('partial lookup', function() {
           assert.equal(result, `${this._directory}/node_modules/is-relative-path/index.js`);
         });
       });
+
+      describe('when a partial implicitly references the index.js file of a subdir', function() {
+        it('still resolves the partial', function() {
+          return this._run({
+            filename: `${this._directory}/usesSubdirIndex.js`,
+            args: ['components/common']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/components/common/index.js`);
+          });
+        });
+      });
     });
 
     describe('commonjs', function() {
