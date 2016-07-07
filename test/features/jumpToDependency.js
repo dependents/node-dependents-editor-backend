@@ -419,6 +419,32 @@ describe('partial lookup', function() {
           });
         });
       });
+
+      describe('when a file outside of the root references a partial within the root', function() {
+        it('still resolves the partial', function() {
+          this._directory = `${this._directory}/subproject`;
+
+          return this._run({
+            filename: `${this._directory}/test/index.spec.js`,
+            args: ['module']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/src/module.js`);
+          });
+        });
+      });
+
+      describe('when a file outside of the root references a partial within the root that has an index.js file', function() {
+        it('still resolves the partial', function() {
+          this._directory = `${this._directory}/subproject`;
+
+          return this._run({
+            filename: `${this._directory}/test/index.spec.js`,
+            args: ['components/Sweet']
+          }).then(result => {
+            assert.equal(result, `${this._directory}/src/components/Sweet/index.js`);
+          });
+        });
+      });
     });
 
     describe('commonjs', function() {
@@ -457,6 +483,15 @@ describe('partial lookup', function() {
         return this._run({
           filename: `${this._directory}/index.js`,
           args: ['dir']
+        }).then(result => {
+          assert.equal(result, `${this._directory}/dir/index.js`);
+        });
+      });
+
+      it('resolves .. partials to the parent index.js file', function() {
+        return this._run({
+          filename: `${this._directory}/dir/subdir/baz.js`,
+          args: ['../']
         }).then(result => {
           assert.equal(result, `${this._directory}/dir/index.js`);
         });
