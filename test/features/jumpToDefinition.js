@@ -30,6 +30,19 @@ describe('jump to definition', function() {
       }, Error, 'Could not read the file: nogood.js');
     });
 
+    it('returns an empty string if the clicked node could not be found', function() {
+      mockfs({
+        'example.js': ''
+      });
+
+      const result = jumpToDefinition({
+        filename: 'example.js',
+        clickPosition: '4,5'
+      });
+
+      assert.equal(result, '');
+    });
+
     describe('identifiers', function() {
       it('returns an empty string if a definition could not be found', function() {
         mockfs({
