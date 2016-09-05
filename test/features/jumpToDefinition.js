@@ -18,7 +18,16 @@ describe('jump to definition', function() {
           filename: 'example.js',
           clickPosition: '4'
         });
-      }, Error, 'click position should be of the format row,col');
+      }, Error, 'Click position should be of the format row,col');
+    });
+
+    it('throws when given a file that cannot be found/read', function() {
+      assert.throws(() => {
+        jumpToDefinition({
+          filename: 'nogood.js',
+          clickPosition: '4,5'
+        });
+      }, Error, 'Could not read the file: nogood.js');
     });
 
     describe('identifiers', function() {
