@@ -150,5 +150,88 @@ describe('jump to definition', function() {
         });
       });
     });
+
+    describe('import literals - dependency paths', function() {
+      it('returns an empty string if a string is not part of an import', function() {
+        const directory = __dirname;
+
+        mockfs({
+          [directory]: {
+            'example.js': 'console.log("bar");'
+          }
+        });
+
+        const result = jumpToDefinition({
+          filename: `${directory}/example.js`,
+          clickPosition: '1,15',
+          directory
+        });
+
+        assert.equal(result, '');
+      });
+
+      describe('when the string is part of an import default specifier', function() {
+        it('returns the resolved partial name', function() {
+          const directory = __dirname + '/example';
+
+          mockfs({
+            [directory]: {
+              'index.js': 'import foo from "./foo";',
+              'foo.js': 'export default 1;'
+            }
+          });
+
+          const result = jumpToDefinition({
+            filename: `${directory}/index.js`,
+            clickPosition: '1,20',
+            directory
+          });
+
+          assert.equal(result, `${directory}/foo.js`);
+        });
+      });
+
+      describe('when the string is part of an import specifier', function() {
+        it('returns the resolved partial name', function() {
+          const directory = __dirname + '/example';
+
+          mockfs({
+            [directory]: {
+              'index.js': 'import {foo} from "./foo";',
+              'foo.js': 'export default 1;'
+            }
+          });
+
+          const result = jumpToDefinition({
+            filename: `${directory}/index.js`,
+            clickPosition: '1,23',
+            directory
+          });
+
+          assert.equal(result, `${directory}/foo.js`);
+        });
+      });
+
+      describe('when the string is part of an import namespace specifier', function() {
+        it('returns the resolved partial name', function() {
+          const directory = __dirname + '/example';
+
+          mockfs({
+            [directory]: {
+              'index.js': 'import * as foo from "./foo";',
+              'foo.js': 'export default 1;'
+            }
+          });
+
+          const result = jumpToDefinition({
+            filename: `${directory}/index.js`,
+            clickPosition: '1,26',
+            directory
+          });
+
+          assert.equal(result, `${directory}/foo.js`);
+        });
+      });
+    });
   });
 });
