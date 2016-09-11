@@ -62,6 +62,8 @@ describe('jump to definition', function() {
           mockfs({
             es6: {
               'importDeclaration.js': `import {bar} from './bar';\nconsole.log(bar);`,
+              'importDeclarationLocal.js': `import {foo as bar} from './bar';\nconsole.log(bar);`,
+              'importDeclarationMultiple.js': `import foo, {bar} from './bar';\nconsole.log(bar);`,
               'importDefaultDeclaration.js': `import bar from './bar';\nconsole.log(bar);`,
               'importNamespaceDeclaration.js': `import * as bar from './bar';\nconsole.log(bar);`
             }
@@ -93,6 +95,24 @@ describe('jump to definition', function() {
           });
 
           assert.equal(result, 'es6/importDefaultDeclaration.js:1:8');
+        });
+
+        it('works for local renames of import declarations', function() {
+          const result = jumpToDefinition({
+            filename: 'es6/importDeclarationLocal.js',
+            clickPosition: '2,14'
+          });
+
+          assert.equal(result, 'es6/importDeclarationLocal.js:1:16');
+        });
+
+        it('works for multiple imports within an import declaration', function() {
+          const result = jumpToDefinition({
+            filename: 'es6/importDeclarationMultiple.js',
+            clickPosition: '2,14'
+          });
+
+          assert.equal(result, 'es6/importDeclarationMultiple.js:1:14');
         });
       });
 
