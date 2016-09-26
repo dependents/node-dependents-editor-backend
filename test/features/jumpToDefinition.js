@@ -63,7 +63,11 @@ describe('jump to definition', function() {
             mockfs({
               'single.js': 'var foo = 1;\nconsole.log(foo);',
               'multiple.js': 'var bar = 2, foo = 1;\nconsole.log(foo);',
-              'funcExpression.js': 'var foo = function(){};\nconsole.log(foo);'
+              'funcExpression.js': 'var foo = function(){};\nconsole.log(foo);',
+              'objDeclaration.js': 'var foo = {bar: function(){}};\nconsole.log(foo);',
+              'objCall.js': 'var foo = {bar: function(){}};\nconsole.log(foo.bar());',
+              'const.js': 'const foo = 1;\nconsole.log(foo);',
+              'let.js': 'let foo = 1;\nconsole.log(foo);'
             });
           });
 
@@ -92,6 +96,42 @@ describe('jump to definition', function() {
             });
 
             assert.equal(result, 'funcExpression.js:1:5');
+          });
+
+          it('finds the definition of an object literal', function() {
+            const result = jumpToDefinition({
+              filename: 'objDeclaration.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'objDeclaration.js:1:5');
+          });
+
+          it('finds the definition of an object literal in a member expression', function() {
+            const result = jumpToDefinition({
+              filename: 'objCall.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'objCall.js:1:5');
+          });
+
+          it('finds the definition of a const', function() {
+            const result = jumpToDefinition({
+              filename: 'const.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'const.js:1:7');
+          });
+
+          it('finds the definition of a let variable', function() {
+            const result = jumpToDefinition({
+              filename: 'let.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'let.js:1:5');
           });
         });
 
@@ -133,6 +173,34 @@ describe('jump to definition', function() {
             });
 
             assert.equal(result, 'higher.js:1:10');
+          });
+        });
+
+        describe.skip('when the definition is a member of an object', function() {
+          it('finds the definition of a function property', function() {
+            mockfs({
+              'property.js': 'var obj = {\nfoo: function(){}};\nconsole.log(obj.foo);'
+            });
+
+            const result = jumpToDefinition({
+              filename: 'property.js',
+              clickPosition: '3,17'
+            });
+
+            assert.equal(result, 'property.js:2:1');
+          });
+
+          it('finds the definition of a data property', function() {
+            mockfs({
+              'property.js': 'var obj = {\nfoo: 1}\nconsole.log(obj.foo);'
+            });
+
+            const result = jumpToDefinition({
+              filename: 'property.js',
+              clickPosition: '3,17'
+            });
+
+            assert.equal(result, 'property.js:2:1');
           });
         });
       });
