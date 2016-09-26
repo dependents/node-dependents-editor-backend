@@ -176,7 +176,7 @@ describe('jump to definition', function() {
           });
         });
 
-        describe.skip('when the definition is a member of an object', function() {
+        describe('when the definition is a member of an object', function() {
           it('finds the definition of a function property', function() {
             mockfs({
               'property.js': 'var obj = {\nfoo: function(){}};\nconsole.log(obj.foo);'
