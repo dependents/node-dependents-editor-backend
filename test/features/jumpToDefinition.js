@@ -176,6 +176,34 @@ describe('jump to definition', function() {
           });
         });
 
+        describe('when the definition is a static property', function() {
+          it('finds the definition for a function static property within the function', function() {
+            mockfs({
+              'static.js': 'function foo() {\nfoo.bar = 1;\nconsole.log(foo.bar);}'
+            });
+
+            const result = jumpToDefinition({
+              filename: 'static.js',
+              clickPosition: '3,17'
+            });
+
+            assert.equal(result, 'static.js:2:4');
+          });
+
+          it('finds the definition for a function static property outside of the function', function() {
+            mockfs({
+              'static.js': 'function foo() {\nfoo.bar = 1;}\nconsole.log(foo.bar);'
+            });
+
+            const result = jumpToDefinition({
+              filename: 'static.js',
+              clickPosition: '3,17'
+            });
+
+            assert.equal(result, 'static.js:2:4');
+          });
+        });
+
         describe('when the definition is a member of an object', function() {
           it('finds the definition of a function property', function() {
             mockfs({
@@ -201,6 +229,19 @@ describe('jump to definition', function() {
             });
 
             assert.equal(result, 'property.js:2:1');
+          });
+
+          it('finds the definition of the property of a property of an object', function() {
+            mockfs({
+              'nested.js': 'var obj = {\nfoo: {\nbar: 1}};\nconsole.log(obj.foo.bar);'
+            });
+
+            const result = jumpToDefinition({
+              filename: 'nested.js',
+              clickPosition: '4,21'
+            });
+
+            assert.equal(result, 'nested.js:3:1');
           });
         });
       });
