@@ -23,7 +23,7 @@
     "plugin"
   ],
   "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/mrjoelkemp/node-dependents-editor-backend/issues"
   },

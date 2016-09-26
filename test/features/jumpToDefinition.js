@@ -57,7 +57,88 @@ describe('jump to definition', function() {
         assert.equal(result, '');
       });
 
-      describe('when a clicked identifier belongs to an import', function() {
+      describe('with a definition in the same file', function() {
+        describe('when the definition is a variable declaration', function() {
+          beforeEach(function() {
+            mockfs({
+              'single.js': 'var foo = 1;\nconsole.log(foo);',
+              'multiple.js': 'var bar = 2, foo = 1;\nconsole.log(foo);',
+              'funcExpression.js': 'var foo = function(){};\nconsole.log(foo);'
+            });
+          });
+
+          it('finds the definition with a single declared variable', function() {
+            const result = jumpToDefinition({
+              filename: 'single.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'single.js:1:5');
+          });
+
+          it('finds the definition with mutiple declared vars', function() {
+            const result = jumpToDefinition({
+              filename: 'multiple.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'multiple.js:1:14');
+          });
+
+          it('finds the definition of a function expression', function() {
+            const result = jumpToDefinition({
+              filename: 'funcExpression.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'funcExpression.js:1:5');
+          });
+        });
+
+        describe('when the definition is a function declaration', function() {
+          it('finds the definition of a sibling', function() {
+            mockfs({
+              'sibling.js': 'function foo(){}\nconsole.log(foo);'
+            });
+
+            const result = jumpToDefinition({
+              filename: 'sibling.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'sibling.js:1:10');
+          });
+
+          it('finds the definition that is the immediate parent', function() {
+            mockfs({
+              'parent.js': 'function foo(){\nconsole.log(foo);\n}'
+            });
+
+            const result = jumpToDefinition({
+              filename: 'parent.js',
+              clickPosition: '2,13'
+            });
+
+            assert.equal(result, 'parent.js:1:10');
+          });
+
+          it('finds the definition that is higher up in scope', function() {
+            mockfs({
+              'higher.js': 'function bar(){};\nfunction foo(){\nconsole.log(bar);\n}'
+            });
+
+            const result = jumpToDefinition({
+              filename: 'higher.js',
+              clickPosition: '3,13'
+            });
+
+            assert.equal(result, 'higher.js:1:10');
+          });
+        });
+      });
+
+      // TODO: Change these to look within the resolved import
+      describe.skip('when a clicked identifier belongs to an import', function() {
         beforeEach(function() {
           mockfs({
             es6: {
