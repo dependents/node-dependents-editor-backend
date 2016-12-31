@@ -5,7 +5,7 @@ import assign from 'object-assign';
 import assert from 'assert';
 import path from 'path';
 
-describe('partial lookup', function() {
+describe('jump to dependency', function() {
   beforeEach(function() {
     this._fixturePath = path.resolve(__dirname, '../fixtures');
 
@@ -522,7 +522,7 @@ describe('partial lookup', function() {
 
       it('resolves aliased partials', function() {
         return this._run({
-          filename: `${this._directory}/webpack/index.js`,
+          filename: `${this._directory}/index.js`,
           args: ['R']
         }).then(result => {
           assert.equal(result, `${this._directory}/node_modules/is-relative-path/index.js`);
@@ -531,7 +531,7 @@ describe('partial lookup', function() {
 
       it('resolves unaliased partials', function() {
         return this._run({
-          filename: `${this._directory}/webpack/index.js`,
+          filename: `${this._directory}/index.js`,
           args: ['./someModule']
         }).then(result => {
           assert.equal(result, `${this._directory}/someModule.js`);
@@ -540,7 +540,7 @@ describe('partial lookup', function() {
 
       it('resolves template partials', function() {
         return this._run({
-          filename: `${this._directory}/webpack/index.js`,
+          filename: `${this._directory}/index.js`,
           args: ['hgn!./templates/foo.mustache']
         }).then(result => {
           assert.equal(result, `${this._directory}/templates/foo.mustache`);
@@ -549,7 +549,7 @@ describe('partial lookup', function() {
 
       it('resolves template partials without the loader prefix', function() {
         return this._run({
-          filename: `${this._directory}/webpack/index.js`,
+          filename: `${this._directory}/index.js`,
           args: ['./templates/foo.mustache']
         }).then(result => {
           assert.equal(result, `${this._directory}/templates/foo.mustache`);
@@ -558,7 +558,7 @@ describe('partial lookup', function() {
 
       it('resolves text partials', function() {
         return this._run({
-          filename: `${this._directory}/webpack/index.js`,
+          filename: `${this._directory}/index.js`,
           args: ['text!./templates/foo.mustache']
         }).then(result => {
           assert.equal(result, `${this._directory}/templates/foo.mustache`);
@@ -567,7 +567,7 @@ describe('partial lookup', function() {
 
       it('resolves text partials without the loader prefix', function() {
         return this._run({
-          filename: `${this._directory}/webpack/index.js`,
+          filename: `${this._directory}/index.js`,
           args: ['./templates/foo.mustache']
         }).then(result => {
           assert.equal(result, `${this._directory}/templates/foo.mustache`);
@@ -576,7 +576,7 @@ describe('partial lookup', function() {
 
       it('resolves style partials', function() {
         return this._run({
-          filename: `${this._directory}/webpack/index.js`,
+          filename: `${this._directory}/index.js`,
           args: ['css!./styles/styles.css']
         }).then(result => {
           assert.equal(result, `${this._directory}/styles/styles.css`);
@@ -585,7 +585,7 @@ describe('partial lookup', function() {
 
       it('resolves style partials without the loader prefix', function() {
         return this._run({
-          filename: `${this._directory}/webpack/index.js`,
+          filename: `${this._directory}/index.js`,
           args: ['./styles/styles.css']
         }).then(result => {
           assert.equal(result, `${this._directory}/styles/styles.css`);
