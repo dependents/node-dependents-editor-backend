@@ -51,9 +51,9 @@
     "jscs-preset-mrjoelkemp": "~1.0.0",
     "jshint": "~2.8.0",
     "mocha": "~2.2.5",
-    "mock-fs": "^3.11.0",
+    "mock-fs": "^4.4.2",
     "os-tmpdir": "~1.0.1",
-    "rewire": "~2.5.1",
-    "sinon": "~1.17.4"
+    "rewire": "~3.0.2",
+    "sinon": "~4.4.2"
   }
 }
