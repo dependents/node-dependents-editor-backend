@@ -41,7 +41,7 @@
     "node-tictoc": "^1.3.0",
     "object-assign": "^4.1.1",
     "q": "^1.5.1",
-    "taxicab": "^2.2.0",
+    "taxicab": "^3.0.0",
     "tree-pic": "^1.0.1"
   },
   "devDependencies": {
