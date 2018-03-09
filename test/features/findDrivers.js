@@ -134,7 +134,7 @@ describe('find drivers', function() {
       this._directory = `${this._fixturePath}/scss`;
     });
 
-    it('finds the affected top-level stylesheets', function() {
+    it.only('finds the affected top-level stylesheets', function() {
       return this._run({
         filename: `${this._directory}/_mixins.scss`
       }).then(drivers => {
